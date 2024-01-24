@@ -1,51 +1,65 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import { Icon, onSmWidth } from '@/ui'
+import { onSmWidth } from '@/ui'
+import { SideBarItem } from './SideBarItem'
 
 const sideBarItems = [
     {
+        id: 1,
+        name: 'Главная',
+        icon: 'star'
+    },
+    {
+        id: 2,
         name: 'Отметиться',
         icon: 'star'
     },
     {
-        name: 'Отметиться',
+        id: 3,
+        name: 'Новости',
         icon: 'star'
     },
     {
-        name: 'Отметиться',
+        id: 4,
+        name: 'Сообщения',
         icon: 'star'
     },
     {
-        name: 'Отметиться',
-        icon: 'star'
-    },
-    {
-        name: 'Отметиться',
+        id: 5,
+        name: 'Выйти',
         icon: 'star'
     },
 ]
 
 export const SideBar = () => {
+    const [items, setItems] = React.useState(sideBarItems);
+    const moveItem = (fromIndex, toIndex) => {
+        const updatedItems = [...items];
+        const [movedItem] = updatedItems.splice(fromIndex, 1);
+        updatedItems.splice(toIndex, 0, movedItem);
+        setItems(updatedItems);
+    };
 
     return (
-        <Container>
-            <Wrapper>
-                {sideBarItems.map(({ icon, name }, index) =>
-                    <ItemWrapper key={index} to={'/'}>
-                        <Icon
-                            icon={'star'}
-                            size={24}
+        <DndProvider backend={HTML5Backend}>
+            <Container>
+                <Wrapper>
+                    {items.map((item, index) => (
+                        <SideBarItem
+                            key={index}
+                            id={item.id}
+                            name={item.name}
+                            index={index}
+                            moveItem={moveItem}
                         />
-                        <ItemName>
-                            {name}
-                        </ItemName>
-                    </ItemWrapper>
-                )}
-            </Wrapper>
-        </Container >
-    )
+                    ))}
+                </Wrapper>
+            </Container>
+        </DndProvider>
+    );
 }
 
 const Container = styled.div`
@@ -87,43 +101,3 @@ const Wrapper = styled.div`
     }
 `
 
-const ItemWrapper = styled(Link)`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-decoration: none;
-    font-size: 16px;
-
-    height: 70px;
-    width: 100%;
-    border-radius: 8px;
-    cursor: pointer;
-    & * {
-        color: #a3b7c7;
-        padding-right: 10px;
-    }
-
-    &:hover {
-        background-color: #c0cdd8;
-        svg {
-            fill: #eff4ff;
-            stroke: #eff4ff;
-        }
-    }
-
-    ${onSmWidth} {
-        margin-bottom: 24px;
-
-        & * {
-            padding-right: 0;
-        }
-    }
-`
-
-const ItemName = styled.div`
-    color: #111;
-    ${onSmWidth} {
-        display: none;
-    }
-`

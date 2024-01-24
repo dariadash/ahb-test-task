@@ -6,3 +6,7 @@ a {
   font-size: 24px;
   color: #111;
 }
+
+a:hover {
+  color: #29a0e6;
+}

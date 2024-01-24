@@ -28,6 +28,7 @@ import {
 } from 'react-icons/gi'
 import {
   BiEditAlt,
+  BiSave,
   BiSend,
   BiReset,
   BiSelectMultiple,
@@ -46,6 +47,7 @@ const Icons = {
   'noavatar': BsPeople,
   'users': FaUsers,
   'edit': BiEditAlt,
+  'save': BiSave,
   'star': GiRoundStar,
   'gem': FaGem,
   'upload': BsCloudUpload,

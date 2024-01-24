@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
-import initReducer from './features/clients-list/model/initSlice'
+import clientsReducer from './features/clients-list/model/clientsSlice'
 
 const rootReducer = combineReducers({
-    initReducer,
+    clientsReducer,
 })
 
 export const setupStore = () => {

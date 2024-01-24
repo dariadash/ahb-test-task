@@ -15,6 +15,10 @@ module.exports = {
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.jsx'],
+        fallback: {
+            'react/jsx-runtime': 'react/jsx-runtime.js',
+            'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
+        },
     },
     module: {
         rules: [
