@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 import { useDrag, useDrop } from 'react-dnd'
 
 import { useAppDispatch } from "@/hooks/hooks"
-import { Button, DeleteButton, Icon, Input } from "@/ui"
-import { deleteItem, editItem } from "../model/clientsSlice"
+import { Button, Icon, Input } from "@/ui"
+import { deleteItem, dragAndDropItem, editItem } from "../model/clientsSlice"
 
 type ClientsListItemProps = {
     id: number,
@@ -15,7 +15,6 @@ type ClientsListItemProps = {
     status: string,
     created_at: string,
     index: number,
-    moveItem: (itemIndex, index) => void
 }
 
 const ItemType = 'TABLE_ITEM';
@@ -28,7 +27,6 @@ export const ClientsListItem = ({
     status,
     created_at,
     index,
-    moveItem
 }: ClientsListItemProps) => {
     const dispatch = useAppDispatch()
     const [edit, setEdit] = React.useState(false)
@@ -52,7 +50,10 @@ export const ClientsListItem = ({
         accept: ItemType,
         hover: (draggedItem: any) => {
             if (draggedItem.index !== index) {
-                moveItem(draggedItem.index, index);
+                dispatch(dragAndDropItem({
+                    fromIndex: draggedItem.index,
+                    toIndex: index
+                }))
                 draggedItem.index = index;
             }
         },
@@ -151,12 +152,14 @@ export const ClientsListItem = ({
                         day: '2-digit'
                     })}
             </TableTd>
-            <TableTd>
+            <TdButtons>
                 <Button onClick={() => setEdit(!edit)}>
                     <Icon icon="edit" />
                 </Button>
-                <DeleteButton onClick={() => dispatch(deleteItem(id))} />
-            </TableTd>
+                <Button danger onClick={() => dispatch(deleteItem(id))}>
+                    <Icon icon='delete' />
+                </Button>
+            </TdButtons>
         </TableTr >
     )
 }
@@ -171,8 +174,16 @@ const TableTr = styled.tr<StyledProps>`
     `}
 `
 
-const TableTd = styled.th`
-    border: 1px solid #ddd;
+const TableTd = styled.td`
+    border: 1px solid #a3b7c7;
     padding: 8px;
     text-align: left;
-` 
+`
+
+const TdButtons = styled.td`
+    padding: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+`

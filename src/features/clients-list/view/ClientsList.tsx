@@ -6,32 +6,28 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { useAppSelector } from '@/hooks/hooks'
 import { AddForm } from './AddForm'
 import { ClientsListItem } from './ClientsListItem'
+import { Filters } from './Filters'
 
 export const ClientsList = () => {
     const clients = useAppSelector((state) => state.clientsReducer.clients)
-    const [items, setItems] = React.useState(clients);
-    const moveItem = (fromIndex, toIndex) => {
-        const updatedItems = [...items];
-        const [movedItem] = updatedItems.splice(fromIndex, 1);
-        updatedItems.splice(toIndex, 0, movedItem);
-        setItems(updatedItems);
-    };
+
     return (
         <DndProvider backend={HTML5Backend}>
             <ListWrapper>
+                <Filters />
                 <Table>
                     <thead>
                         <tr>
                             <TableTh>ID</TableTh>
-                            <TableTh>Fullname</TableTh>
-                            <TableTh>Phone</TableTh>
-                            <TableTh>Region</TableTh>
-                            <TableTh>Status</TableTh>
-                            <TableTh>Created at</TableTh>
+                            <TableTh>ФИО</TableTh>
+                            <TableTh>Телефон</TableTh>
+                            <TableTh>Город</TableTh>
+                            <TableTh>Статус</TableTh>
+                            <TableTh>Создан</TableTh>
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map((item, index) =>
+                        {clients.map((item, index) =>
                             <ClientsListItem
                                 key={index}
                                 id={item.id}
@@ -41,7 +37,6 @@ export const ClientsList = () => {
                                 status={item.status}
                                 created_at={item.created_at}
                                 index={index}
-                                moveItem={moveItem}
                             />
                         )}
                     </tbody>
@@ -69,8 +64,9 @@ const Table = styled.table`
 `
 
 const TableTh = styled.th`
-    border: 1px solid #ddd;
-    background-color: #f2f2f2;
+    border: 1px solid #a3b7c7;
+    background-color: #eff4ff;
+    color: #90a8bb;
     padding: 8px;
     text-align: left;
 `

@@ -1,5 +1,5 @@
 export * from './Button'
-export * from './DeleteButton'
+export * from './DropDown'
 export * from './Icon'
 export * from './Input'
 export * from './const'

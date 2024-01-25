@@ -1,3 +1,4 @@
 import React from 'react'
+import { Client } from '@/features/client'
 
-export const ClientPage = () => <></>
+export const ClientPage = () => <Client />
