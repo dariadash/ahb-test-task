@@ -5,4 +5,10 @@ export type Client = {
     phone: string,
     region: string,
     status: string
-} 
+}
+
+export enum Status {
+    Active,
+    Inactive,
+    Suspended
+}

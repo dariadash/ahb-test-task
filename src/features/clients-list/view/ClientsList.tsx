@@ -3,14 +3,11 @@ import styled from 'styled-components'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import { useAppSelector } from '@/hooks/hooks'
-import { AddForm } from './AddForm'
-import { ClientsListItem } from './ClientsListItem'
-import { Filters } from './Filters'
+import { AddForm } from '../../client-add/view/AddForm'
+import { Filters } from '../../client-filter/view/Filters'
+import { ClientsListBody } from './ClientsListBody'
 
 export const ClientsList = () => {
-    const clients = useAppSelector((state) => state.clientsReducer.clients)
-
     return (
         <DndProvider backend={HTML5Backend}>
             <ListWrapper>
@@ -27,18 +24,7 @@ export const ClientsList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {clients.map((item, index) =>
-                            <ClientsListItem
-                                key={index}
-                                id={item.id}
-                                fullname={item.fullname}
-                                phone={item.phone}
-                                region={item.region}
-                                status={item.status}
-                                created_at={item.created_at}
-                                index={index}
-                            />
-                        )}
+                        <ClientsListBody />
                     </tbody>
                 </Table>
             </ListWrapper>

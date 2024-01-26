@@ -42,14 +42,14 @@ export const Dropdown = <T,>({ options, onOptionChange, selected, placeholder = 
     return (
         <DropDownContainer size={size} ref={ref}>
             <DropDownHeader size={size} onClick={toggleList}>
-                <div>
+                <>
                     {selectedText && (
-                        <div>{selectedText}</div>
+                        <>{selectedText}</>
                     )}
                     {!selectedText && (
-                        <div>{placeholder}</div>
+                        <>{placeholder}</>
                     )}
-                </div>
+                </>
                 <Icon icon={'down'} />
             </DropDownHeader>
             {isOpen && (

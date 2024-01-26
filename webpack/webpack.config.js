@@ -33,31 +33,7 @@ module.exports = {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader'],
             },
-            {
-                test: /\.json$/,
-                loader: 'json-loader',
-                type: 'javascript/auto',
-            },
-            {
-                test: /\.(png|jpe?g|gif)(\?.*)?$/,
-                loader: 'file-loader',
-                options: {
-                    outputPath: 'img/',
-                    name: '[name].[ext]',
-                },
-            },
-            {
-                test: /\.(eot|ttf|woff|woff2|otf|svg)$/,
-                use: [
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 100000,
-                            name: "./assets/fonts/[name].[ext]"
-                        }
-                    }
-                ]
-            },
+
         ]
     },
     plugins: [

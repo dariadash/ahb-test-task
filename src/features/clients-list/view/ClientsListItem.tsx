@@ -3,9 +3,10 @@ import styled, { css } from "styled-components"
 import { Link } from "react-router-dom"
 import { useDrag, useDrop } from 'react-dnd'
 
-import { useAppDispatch } from "@/hooks/hooks"
-import { Button, Icon, Input } from "@/ui"
-import { deleteItem, dragAndDropItem, editItem } from "../model/clientsSlice"
+import { useAppDispatch } from "@/store/hooks"
+import { Button, Icon } from "@/ui"
+import { deleteItem, dragAndDropItem } from "../model"
+import { ClientsListEditItem } from "./ClientsListEditItem"
 
 type ClientsListItemProps = {
     id: number,
@@ -30,13 +31,6 @@ export const ClientsListItem = ({
 }: ClientsListItemProps) => {
     const dispatch = useAppDispatch()
     const [edit, setEdit] = React.useState(false)
-    const [editedData, setEditedData] = React.useState({
-        id: id,
-        fullname: fullname,
-        status: status,
-        phone: phone,
-        region: region
-    });
 
     const [{ isDragging }, drag] = useDrag({
         type: ItemType,
@@ -61,72 +55,17 @@ export const ClientsListItem = ({
 
     const opacity = isDragging ? 0.5 : 1;
 
-    const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setEditedData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
-    const handleEditSubmit = () => {
-        dispatch(editItem({ id: editedData.id, updatedData: editedData }));
-        setEdit(false)
-    };
-
     if (edit) {
         return (
-            <TableTr>
-                <TableTd>{id}</TableTd>
-                <TableTd>
-                    <Input
-                        type="text"
-                        name="fullname"
-                        placeholder="fullname"
-                        value={editedData.fullname}
-                        onChange={handleEditChange}
-                    />
-                </TableTd>
-                <TableTd>
-                    <Input
-                        type="tel"
-                        name="phone"
-                        placeholder="phone"
-                        value={editedData.phone}
-                        onChange={handleEditChange}
-                    />
-                </TableTd>
-                <TableTd>
-                    <Input
-                        type="text"
-                        name="region"
-                        placeholder="region"
-                        value={editedData.region}
-                        onChange={handleEditChange}
-                    />
-                </TableTd>
-                <TableTd>
-                    <Input
-                        type="text"
-                        name="status"
-                        placeholder="status"
-                        value={editedData.status}
-                        onChange={handleEditChange}
-                    />
-                </TableTd>
-
-                <TableTd>{
-                    new Date(created_at)
-                        .toLocaleString('en-GB', {
-                            year: '2-digit',
-                            month: '2-digit',
-                            day: '2-digit'
-                        })}
-                </TableTd>
-                <Button onClick={() => handleEditSubmit()}>
-                    <Icon icon="save" />
-                </Button>
-            </TableTr >
+            <ClientsListEditItem
+                id={id}
+                fullname={fullname}
+                phone={phone}
+                region={region}
+                status={status}
+                created_at={created_at}
+                setEdit={setEdit}
+            />
         )
     }
 

@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 import { ClientPage } from '@/pages/ClientPage'
 import { ClientsListPage } from '@/pages/ClientsListPage'
-import { Layout, SideBar } from '@/features/app/view'
+import { SideBar } from '@/features/app/view'
 
 
 const routes = [
@@ -20,17 +20,15 @@ const routes = [
 export const Routes = () => (
     <Router>
         <Switch>
-            <Layout>
-                {routes.map((route) => {
-                    const Component = route.component
-                    return (
-                        <Route key={route.path} path={route.path} exact>
-                            <SideBar />
-                            <Component />
-                        </Route>
-                    )
-                })}
-            </Layout>
+            {routes.map((route) => {
+                const Component = route.component
+                return (
+                    <Route key={route.path} path={route.path} exact>
+                        <SideBar />
+                        <Component />
+                    </Route>
+                )
+            })}
         </Switch>
     </Router>
 )

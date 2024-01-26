@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Client } from '@/features/types/Client'
+import { Client } from '@/interfaces/types'
 import { fetchClients } from './clientsThunk'
 
 interface AppState {
     clients: Client[],
     loading: boolean,
-    error: string | undefined,
+    error?: string,
 }
 
 const initialState: AppState = {
@@ -19,14 +19,13 @@ export const clientsSlice = createSlice({
     initialState,
     reducers: {
         createItem: (state, action) => {
-            const newDate = new Date().toDateString()
             const newItem = {
                 id: state.clients.length,
                 fullname: action.payload.fullname,
                 phone: action.payload.phone,
                 region: action.payload.region,
                 status: action.payload.status,
-                created_at: newDate,
+                created_at: new Date().toDateString(),
             };
             state.clients.push(newItem)
         },
@@ -67,6 +66,11 @@ export const clientsSlice = createSlice({
     },
 })
 
-export const { createItem, deleteItem, editItem, dragAndDropItem } = clientsSlice.actions
+export const {
+    createItem,
+    deleteItem,
+    editItem,
+    dragAndDropItem,
+} = clientsSlice.actions
 
 export default clientsSlice.reducer

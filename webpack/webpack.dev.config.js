@@ -1,5 +1,6 @@
 const { merge } = require('webpack-merge')
 const baseConfig = require('./webpack.config')
+const path = require('path')
 require('dotenv').config()
 
 module.exports = merge(baseConfig, {
@@ -11,14 +12,15 @@ module.exports = merge(baseConfig, {
         host: process.env.DEV_SERVER_HOST,
         port: +process.env.DEV_SERVER_PORT,
         historyApiFallback: true,
+        static: ['assets'],
         proxy: {
-            // Настройка прокси
-            "/api": {
-                target: `http://${process.env.BACKEND_DOMAIN}`,
-                changeOrigin: true,
-                cookieDomainRewrite: { [process.env.BACKEND_DOMAIN]: "localhost" },
-                withCredentials: true,
-            }
+            // // Настройка прокси
+            // "/api": {
+            //     target: `http://${process.env.BACKEND_DOMAIN}`,
+            //     changeOrigin: true,
+            //     cookieDomainRewrite: { [process.env.BACKEND_DOMAIN]: "localhost" },
+            //     withCredentials: true,
+            // }
         },
     },
 })

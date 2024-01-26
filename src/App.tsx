@@ -1,7 +1,8 @@
 import React from "react"
+import { Layout } from "./features/app/view";
 
-import { fetchClients } from "./features/clients-list/model/clientsThunk"
-import { useAppDispatch, useAppSelector } from "./hooks/hooks"
+import { fetchClients } from "./features/clients-list/model"
+import { useAppDispatch, useAppSelector } from "./store/hooks"
 import { Routes } from "./router"
 
 export function App() {
@@ -20,6 +21,8 @@ export function App() {
         return <p>Error: {error}</p>;
     }
     return (
-        <Routes />
+        <Layout>
+            <Routes />
+        </Layout>
     )
 }

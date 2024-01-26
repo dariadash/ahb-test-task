@@ -1,39 +1,14 @@
 import React from "react"
 import styled from "styled-components"
 import { useForm } from 'react-hook-form'
-import * as Yup from 'yup'
 import { yupResolver } from "@hookform/resolvers/yup"
 
-import { createItem } from "../model/clientsSlice"
-import { useAppDispatch } from "@/hooks/hooks"
-import { Button, Input } from "@/ui"
-
-const phoneRegEx = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
-
-const validationSchema = Yup.object().shape({
-    fullname: Yup.string()
-        .matches(/^[А-Яа-я ]*$/, 'Допустим только ввод кириллицы без цифр')
-        .required('ФИО обязательно'),
-    status: Yup.string().matches(/^[А-Яа-я ]*$/, 'Допустим только ввод кириллицы без цифр'),
-    phone: Yup.string()
-        .required("Телефон обязателен")
-        .min(8)
-        .max(16)
-        .matches(
-            phoneRegEx,
-            'Номер телефона должен содержать цифры, от 8 до 16 цифр'
-        ),
-    region: Yup.string()
-        .required("Город обязателен")
-        .matches(/^[А-Яа-я ]*$/, 'Допустим только ввод кириллицы без цифр')
-});
-
-interface FormInput {
-    fullname: string,
-    status?: string,
-    phone: string,
-    region: string
-}
+import { createItem } from "@/features/clients-list/model"
+import { useAppDispatch } from "@/store/hooks"
+import { Button, Dropdown, Input } from "@/ui"
+import { formAddSchema, FormInput } from "../model"
+import { Status } from "@/interfaces/types"
+import { statusResolver } from "@/interfaces/status.resolver"
 
 export const AddForm = () => {
     const dispatch = useAppDispatch()
@@ -41,24 +16,20 @@ export const AddForm = () => {
         register,
         handleSubmit,
         reset,
+        setValue,
+        getValues,
         formState: { errors, isSubmitSuccessful },
     } = useForm<FormInput>({
-        resolver: yupResolver(validationSchema),
+        resolver: yupResolver(formAddSchema),
     })
 
     const onSubmit = (data: FormInput) => {
-        dispatch(createItem(data));
-        console.log(data);
+        dispatch(createItem(data))
     }
 
     React.useEffect(() => {
         if (isSubmitSuccessful) {
-            reset({
-                fullname: "",
-                status: "",
-                phone: "",
-                region: ""
-            })
+            reset()
         }
     }, [isSubmitSuccessful, reset])
 
@@ -90,10 +61,18 @@ export const AddForm = () => {
                 {errors.region && <p>{errors.region.message}</p>}
             </InputWrapper>
             <InputWrapper>
-                <Input
-                    type="text"
+                <Dropdown
                     placeholder="Статус"
-                    {...register('status')}
+                    options={[
+                        ...[Status.Active, Status.Inactive, Status.Suspended].map(
+                            (s) => ({
+                                value: s,
+                                text: statusResolver(s)
+                            })
+                        )
+                    ]}
+                    onOptionChange={(e) => setValue('status', e)}
+                    selected={getValues('status') as Status}
                 />
                 {errors.status && <p>{errors.status.message}</p>}
             </InputWrapper>

@@ -1,16 +1,14 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Client } from '@/features/types/Client';
-import * as jsonData from '@/mock/clients.json'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { Client } from '@/interfaces/types'
 
 export const fetchClients = createAsyncThunk<Client[], void, { rejectValue: unknown }>(
     'content/fetchContent',
     async () => {
         try {
-            return new Promise((resolve) => {
-                setTimeout(() => resolve(jsonData), 1000);
-            });
+            const response = await fetch('/clients.json')
+            return response.json()
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 )
