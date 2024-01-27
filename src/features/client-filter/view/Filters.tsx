@@ -4,13 +4,14 @@ import styled from "styled-components"
 import { Input, Dropdown } from "@/ui"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
 import { setFilter, setSearch } from "../model"
+import { Status } from "@/interfaces/types"
 
 export const Filters = () => {
     const dispatch = useAppDispatch()
 
     const { search, filterStatus } = useAppSelector((s) => s.clientFilterReducer)
 
-    const handleSearchInputChange = event => {
+    const handleSearchInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(setSearch(event.target.value))
     }
 
@@ -26,15 +27,27 @@ export const Filters = () => {
                 onChange={handleSearchInputChange}
             />
             <Dropdown
+                onOptionChange={handleStatusFilterChange}
                 placeholder="Статус"
                 options={[
-                    { value: 'Активен', text: 'Активен' },
-                    { value: 'Неактивен', text: 'Неактивен' },
-                    { value: 'Приостановлен', text: 'Приостановлен' },
-                    { value: null, text: 'Не выбран' },
+                    {
+                        value: Status.Active,
+                        text: Status.Active
+                    },
+                    {
+                        value: Status.Inactive,
+                        text: Status.Inactive
+                    },
+                    {
+                        value: Status.Suspended,
+                        text: Status.Suspended
+                    },
+                    {
+                        value: '',
+                        text: 'Не выбран'
+                    }
                 ]}
-                selected={filterStatus}
-                onOptionChange={handleStatusFilterChange}
+                selected={filterStatus || ''}
             />
         </Container>
     )

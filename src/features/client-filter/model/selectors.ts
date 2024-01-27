@@ -1,6 +1,6 @@
 import { RootState } from '@/store/store'
 
-export const selectFilteredUsers = ({ clientsReducer, clientFilterReducer }: RootState) => {
+export const selectUserList = ({ clientsReducer, clientFilterReducer }: RootState) => {
     let filteredClients = clientsReducer.clients
     if (clientFilterReducer.filterStatus) {
         filteredClients = filteredClients.filter(
@@ -17,5 +17,11 @@ export const selectFilteredUsers = ({ clientsReducer, clientFilterReducer }: Roo
         }
     )
 
-    return filteredClients
+    return {
+        filteredClients,
+        newClients: clientsReducer.clients.filter(
+            (c) => c.isNew
+        ),
+        usersFetched: clientsReducer.dataLoaded
+    }
 }

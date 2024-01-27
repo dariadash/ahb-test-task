@@ -5,7 +5,7 @@ const phoneRegEx = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,
 
 export const formAddSchema = Yup.object().shape({
     fullname: Yup.string()
-        .matches(/^[А-Яа-я ]*$/, 'Допустим только ввод кириллицы без цифр')
+        .matches(/^[а-яА-Я\s.,!?-]*$/, 'Допустим только ввод кириллицы без цифр')
         .required('ФИО обязательно'),
     status: Yup.mixed<Status>().oneOf(Object.values(Status) as Status[]),
     phone: Yup.string()
@@ -18,5 +18,5 @@ export const formAddSchema = Yup.object().shape({
         ),
     region: Yup.string()
         .required("Город обязателен")
-        .matches(/^[А-Яа-я ]*$/, 'Допустим только ввод кириллицы без цифр')
+        .matches(/^[а-яА-Я\s.,!?-]*$/, 'Допустим только ввод кириллицы без цифр')
 });

@@ -13,19 +13,15 @@ export const ClientsList = () => {
             <ListWrapper>
                 <Filters />
                 <Table>
-                    <thead>
-                        <tr>
-                            <TableTh>ID</TableTh>
-                            <TableTh>ФИО</TableTh>
-                            <TableTh>Телефон</TableTh>
-                            <TableTh>Город</TableTh>
-                            <TableTh>Статус</TableTh>
-                            <TableTh>Создан</TableTh>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ClientsListBody />
-                    </tbody>
+                    <TableHeader>
+                        <TableTh>ID</TableTh>
+                        <TableTh>ФИО</TableTh>
+                        <TableTh>Телефон</TableTh>
+                        <TableTh>Город</TableTh>
+                        <TableTh>Статус</TableTh>
+                        <TableTh>Создан</TableTh>
+                    </TableHeader>
+                    <ClientsListBody />
                 </Table>
             </ListWrapper>
             <AddForm />
@@ -43,13 +39,19 @@ const ListWrapper = styled.div`
     };
 `
 
-const Table = styled.table`
+const Table = styled.div`
+    display: table;
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
 `
 
-const TableTh = styled.th`
+const TableHeader = styled.div`
+    display: table-row;
+`
+
+const TableTh = styled.div`
+    display: table-cell;
     border: 1px solid #a3b7c7;
     background-color: #eff4ff;
     color: #90a8bb;

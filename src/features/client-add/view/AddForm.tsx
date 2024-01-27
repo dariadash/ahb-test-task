@@ -1,14 +1,13 @@
 import React from "react"
 import styled from "styled-components"
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup"
 
 import { createItem } from "@/features/clients-list/model"
 import { useAppDispatch } from "@/store/hooks"
 import { Button, Dropdown, Input } from "@/ui"
-import { formAddSchema, FormInput } from "../model"
-import { Status } from "@/interfaces/types"
-import { statusResolver } from "@/interfaces/status.resolver"
+import { FormInput, Status } from "@/interfaces/types"
+import { formAddSchema } from "@/lib/formAddSchema"
 
 export const AddForm = () => {
     const dispatch = useAppDispatch()
@@ -16,8 +15,7 @@ export const AddForm = () => {
         register,
         handleSubmit,
         reset,
-        setValue,
-        getValues,
+        control,
         formState: { errors, isSubmitSuccessful },
     } = useForm<FormInput>({
         resolver: yupResolver(formAddSchema),
@@ -32,6 +30,7 @@ export const AddForm = () => {
             reset()
         }
     }, [isSubmitSuccessful, reset])
+
 
     return (
         <Form onSubmit={handleSubmit(onSubmit)}>
@@ -61,18 +60,32 @@ export const AddForm = () => {
                 {errors.region && <p>{errors.region.message}</p>}
             </InputWrapper>
             <InputWrapper>
-                <Dropdown
-                    placeholder="Статус"
-                    options={[
-                        ...[Status.Active, Status.Inactive, Status.Suspended].map(
-                            (s) => ({
-                                value: s,
-                                text: statusResolver(s)
-                            })
-                        )
-                    ]}
-                    onOptionChange={(e) => setValue('status', e)}
-                    selected={getValues('status') as Status}
+                <Controller
+                    control={control}
+                    name="status"
+                    render={({
+                        field: { onChange, value },
+                    }) => (
+                        <Dropdown
+                            onOptionChange={onChange}
+                            placeholder="Статус"
+                            options={[
+                                {
+                                    value: Status.Active,
+                                    text: Status.Active
+                                },
+                                {
+                                    value: Status.Inactive,
+                                    text: Status.Inactive
+                                },
+                                {
+                                    value: Status.Suspended,
+                                    text: Status.Suspended
+                                }
+                            ]}
+                            selected={value}
+                        />
+                    )}
                 />
                 {errors.status && <p>{errors.status.message}</p>}
             </InputWrapper>

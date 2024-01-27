@@ -7,13 +7,15 @@ import { useAppDispatch } from "@/store/hooks"
 import { Button, Icon } from "@/ui"
 import { deleteItem, dragAndDropItem } from "../model"
 import { ClientsListEditItem } from "./ClientsListEditItem"
+import { Status } from "@/interfaces/types"
+import { formattedDate } from "@/lib/dateFormat"
 
 type ClientsListItemProps = {
     id: number,
     fullname: string,
     phone: string,
     region: string,
-    status: string,
+    status: Status,
     created_at: string,
     index: number,
 }
@@ -83,14 +85,7 @@ export const ClientsListItem = ({
             <TableTd>{region}</TableTd>
             <TableTd>{status}</TableTd>
 
-            <TableTd>{
-                new Date(created_at)
-                    .toLocaleString('en-GB', {
-                        year: '2-digit',
-                        month: '2-digit',
-                        day: '2-digit'
-                    })}
-            </TableTd>
+            <TableTd>{formattedDate(created_at)}</TableTd>
             <TdButtons>
                 <Button onClick={() => setEdit(!edit)}>
                     <Icon icon="edit" />
@@ -107,19 +102,22 @@ type StyledProps = {
     opacity?: number
 }
 
-const TableTr = styled.tr<StyledProps>`
+const TableTr = styled.div<StyledProps>`
+    display: table-row;
     ${({ opacity }) => opacity && css`
         opacity: ${opacity};
     `}
 `
 
-const TableTd = styled.td`
+const TableTd = styled.div`
+    display: table-cell;
     border: 1px solid #a3b7c7;
     padding: 8px;
     text-align: left;
 `
 
-const TdButtons = styled.td`
+const TdButtons = styled.div`
+    display:table-cell;
     padding: 8px;
     display: flex;
     flex-direction: row;

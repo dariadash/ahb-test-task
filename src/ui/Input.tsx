@@ -5,7 +5,6 @@ type InputWrapperProps = {
 }
 
 export const Input = styled.input<InputWrapperProps>`
-  flex-direction: row;
   font-size: 16px;
   padding: 10px;
   border-radius: 8px;

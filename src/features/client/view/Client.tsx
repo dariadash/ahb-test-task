@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { useParams } from 'react-router-dom'
 
 import { useAppSelector } from "@/store/hooks"
+import { formattedDate } from "@/lib/dateFormat"
 
 export const Client = () => {
     const { id } = useParams<{ id: string }>()
@@ -21,14 +22,7 @@ export const Client = () => {
                 <h4>Город: {specificData.region}</h4>
                 <p>{specificData.status}</p>
                 <p>
-                    {
-                        new Date(specificData.created_at)
-                            .toLocaleString('en-GB', {
-                                year: '2-digit',
-                                month: '2-digit',
-                                day: '2-digit'
-                            })
-                    }
+                    {formattedDate(specificData.created_at)}
                 </p>
             </Container>
             }

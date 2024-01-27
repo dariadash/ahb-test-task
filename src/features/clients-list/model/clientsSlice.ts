@@ -4,12 +4,14 @@ import { fetchClients } from './clientsThunk'
 
 interface AppState {
     clients: Client[],
+    dataLoaded: boolean,
     loading: boolean,
     error?: string,
 }
 
 const initialState: AppState = {
     clients: [],
+    dataLoaded: false,
     loading: false,
     error: '',
 }
@@ -19,13 +21,14 @@ export const clientsSlice = createSlice({
     initialState,
     reducers: {
         createItem: (state, action) => {
-            const newItem = {
+            const newItem: Client = {
                 id: state.clients.length,
                 fullname: action.payload.fullname,
                 phone: action.payload.phone,
                 region: action.payload.region,
                 status: action.payload.status,
                 created_at: new Date().toDateString(),
+                isNew: true
             };
             state.clients.push(newItem)
         },
@@ -57,6 +60,7 @@ export const clientsSlice = createSlice({
         })
         builder.addCase(fetchClients.fulfilled, (state, action) => {
             state.loading = false
+            state.dataLoaded = true
             state.clients = action.payload
         })
         builder.addCase(fetchClients.rejected, (state, action) => {

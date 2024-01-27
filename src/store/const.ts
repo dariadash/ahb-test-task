@@ -1,1 +1,0 @@
-export const STORE_AUTOSAVE_MS = 800

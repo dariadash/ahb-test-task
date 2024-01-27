@@ -1,14 +1,19 @@
 import React from "react"
 import styled from "styled-components"
+import { useForm, Controller } from 'react-hook-form'
+import { yupResolver } from "@hookform/resolvers/yup"
 
 import { useAppDispatch } from "@/store/hooks"
-import { Button, Icon, Input } from "@/ui"
+import { Button, Dropdown, Icon, Input } from "@/ui"
 import { editItem } from "../model"
+import { FormInput, Status } from "@/interfaces/types"
+import { formAddSchema } from "@/lib/formAddSchema"
+import { formattedDate } from "@/lib/dateFormat"
 
 type ClientsListEditItemProps = {
     id: number,
     fullname: string,
-    status: string,
+    status: Status,
     phone: string,
     region: string,
     created_at: string,
@@ -18,91 +23,119 @@ type ClientsListEditItemProps = {
 export const ClientsListEditItem = ({
     id,
     fullname,
-    status,
     phone,
     region,
+    status,
     created_at,
     setEdit
 }: ClientsListEditItemProps) => {
     const dispatch = useAppDispatch()
-    const [editedData, setEditedData] = React.useState({
-        id: id,
-        fullname: fullname,
-        status: status,
-        phone: phone,
-        region: region
+
+    const {
+        register,
+        handleSubmit,
+        control,
+        formState: { errors },
+    } = useForm<FormInput>({
+        resolver: yupResolver(formAddSchema),
+        defaultValues: {
+            fullname: fullname,
+            phone: phone,
+            region: region,
+            status: status
+        }
     })
 
-    const handleEditChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setEditedData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }))
-    }
-
-    const handleEditSubmit = () => {
-        dispatch(editItem({ id: editedData.id, updatedData: editedData }))
+    const onSubmit = (data: FormInput) => {
+        dispatch(editItem({ id: id, updatedData: data }))
         setEdit(false)
     }
 
     return (
-        <tr>
+        <TableRow onSubmit={handleSubmit(onSubmit)}>
             <TableTd>{id}</TableTd>
             <TableTd>
                 <Input
                     type="text"
-                    name="fullname"
-                    placeholder="fullname"
-                    value={editedData.fullname}
-                    onChange={handleEditChange}
+                    placeholder="ФИО"
+                    {...register('fullname')}
                 />
+                {errors.fullname && <p>{errors.fullname.message}</p>}
             </TableTd>
             <TableTd>
                 <Input
                     type="tel"
-                    name="phone"
-                    placeholder="phone"
-                    value={editedData.phone}
-                    onChange={handleEditChange}
+                    placeholder="Тел."
+                    {...register('phone')}
                 />
+                {errors.phone && <p>{errors.phone.message}</p>}
             </TableTd>
             <TableTd>
                 <Input
                     type="text"
-                    name="region"
-                    placeholder="region"
-                    value={editedData.region}
-                    onChange={handleEditChange}
+                    placeholder="Город"
+                    {...register('region')}
                 />
+                {errors.region && <p>{errors.region.message}</p>}
             </TableTd>
             <TableTd>
-                <Input
-                    type="text"
+                <Controller
+                    control={control}
                     name="status"
-                    placeholder="status"
-                    value={editedData.status}
-                    onChange={handleEditChange}
+                    render={({
+                        field: { onChange, value },
+                    }) => (
+                        <Dropdown
+                            onOptionChange={onChange}
+                            placeholder="Статус"
+                            options={[
+                                {
+                                    value: Status.Active,
+                                    text: Status.Active
+                                },
+                                {
+                                    value: Status.Inactive,
+                                    text: Status.Inactive
+                                },
+                                {
+                                    value: Status.Suspended,
+                                    text: Status.Suspended
+                                }
+                            ]}
+                            selected={value}
+                        />
+                    )}
                 />
             </TableTd>
 
-            <TableTd>{
-                new Date(created_at)
-                    .toLocaleString('en-GB', {
-                        year: '2-digit',
-                        month: '2-digit',
-                        day: '2-digit'
-                    })}
-            </TableTd>
-            <Button onClick={() => handleEditSubmit()}>
-                <Icon icon="save" />
-            </Button>
-        </tr >
+            <TableTd>{formattedDate(created_at)}</TableTd>
+            <TableButtonTd>
+                <input type="submit" hidden />
+                <Button type='submit'>
+                    <Icon icon="save" />
+                </Button>
+            </TableButtonTd>
+        </TableRow >
     )
 }
 
-const TableTd = styled.td`
+const TableRow = styled.form`
+    display: table-row;
+`
+
+const TableTd = styled.div`
+    display: table-cell;
     border: 1px solid #a3b7c7;
     padding: 8px;
     text-align: left;
+
+    p  {
+        color: #c9403e;
+        margin: 2px;
+    }
+`
+
+const TableButtonTd = styled.div`
+    display: table-cell;
+    padding: 8px;
 `
