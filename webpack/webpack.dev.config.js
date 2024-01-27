@@ -13,14 +13,6 @@ module.exports = merge(baseConfig, {
         port: +process.env.DEV_SERVER_PORT,
         historyApiFallback: true,
         static: ['assets'],
-        proxy: {
-            // // Настройка прокси
-            // "/api": {
-            //     target: `http://${process.env.BACKEND_DOMAIN}`,
-            //     changeOrigin: true,
-            //     cookieDomainRewrite: { [process.env.BACKEND_DOMAIN]: "localhost" },
-            //     withCredentials: true,
-            // }
-        },
+        proxy: {},
     },
 })

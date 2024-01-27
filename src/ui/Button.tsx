@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import styled, { css } from 'styled-components'
 
 type ButtonProps = {
@@ -22,7 +21,7 @@ const ButtonCss = css<ButtonProps>`
     &:hover {
         color: #eff4ff;
         background: #a3b7c7;
-        transition: 0.2s;
+        transition: 0.3s;
     }
 
     ${({ secondary }) => secondary && css`

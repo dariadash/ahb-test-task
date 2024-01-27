@@ -1,7 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
 import { onSmWidth } from './const'
-import { Icon, IconName } from './Icon'
+import { Icon } from './Icon'
 
 type Props<T> = {
     options: {
@@ -138,7 +138,7 @@ const DropDownListContainer = styled.div<DropDownProps>`
     overflow-y: auto;
 
     ${({ dropUp }) => dropUp && css`
-        bottom: 40px;
+        bottom: 42px;
         box-shadow: none;
     `}
 `
